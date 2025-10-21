@@ -35,26 +35,26 @@ public class InputManager : MonoBehaviour
     /// <param name="screenPosition"></param>
     void DetectHit(Vector3 screenPosition)
     {
-        Vector3 worldPoint = mainCamera.ScreenToWorldPoint(screenPosition);
-        Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
+        // Create a ray from the camera through the mouse/touch position
+        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
 
-        RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero, interactableLayer);
+        // Raycast hit info
+        RaycastHit hit;
 
-        if (hit.collider != null)
+        // Perform raycast against objects in interactableLayer
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, interactableLayer))
         {
-            Debug.Log("Touched object: " + hit.collider.gameObject.name);
-            if (hit.collider.gameObject.GetComponent<Card>() != null)
+            Card card = hit.collider.GetComponent<Card>();
+            if (card != null)
             {
-                Card card = hit.collider.gameObject.GetComponent<Card>();
-                if ((card.IsOpen))
-                {
+                Debug.Log("Touched object: " + card.CardID);
+
+                if (card.IsOpen)
                     card.FlipClose();
-                }
                 else
-                {
                     card.FlipOpen();
-                }
             }
         }
     }
+
 }

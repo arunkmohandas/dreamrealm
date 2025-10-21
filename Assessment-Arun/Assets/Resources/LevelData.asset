@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelInfo:
   - levelNumber: 1
-    rows: 3
+    rows: 4
     columns: 3
   - levelNumber: 2
-    rows: 3
+    rows: 4
     columns: 3
   - levelNumber: 3
-    rows: 3
+    rows: 4
     columns: 3
   - levelNumber: 4
     rows: 4
@@ -33,13 +33,13 @@ MonoBehaviour:
     columns: 4
   - levelNumber: 7
     rows: 5
-    columns: 5
+    columns: 4
   - levelNumber: 8
     rows: 5
-    columns: 5
+    columns: 4
   - levelNumber: 9
     rows: 5
-    columns: 5
+    columns: 4
   - levelNumber: 10
     rows: 6
     columns: 6
