@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     /// <param name="sprite"></param>
-    public void InitializeCard(int id, Sprite sprite)
+    public void Initialize(int id, Sprite sprite)
     {
         cardId = id; 
         isOpen = false;
