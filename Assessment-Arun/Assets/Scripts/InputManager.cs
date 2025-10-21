@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
     private Camera mainCamera;
     public LayerMask interactableLayer;
+    public Action<Card> OnCardClicked;
 
     void Start()
     {
@@ -35,10 +37,7 @@ public class InputManager : MonoBehaviour
     /// <param name="screenPosition"></param>
     void DetectHit(Vector3 screenPosition)
     {
-        // Create a ray from the camera through the mouse/touch position
         Ray ray = mainCamera.ScreenPointToRay(screenPosition);
-
-        // Raycast hit info
         RaycastHit hit;
 
         // Perform raycast against objects in interactableLayer
@@ -47,12 +46,8 @@ public class InputManager : MonoBehaviour
             Card card = hit.collider.GetComponent<Card>();
             if (card != null)
             {
-                Debug.Log("Touched object: " + card.CardID);
-
-                if (card.IsOpen)
-                    card.FlipClose();
-                else
-                    card.FlipOpen();
+                //Debug.Log("Touched object: " + card.CardID);
+                OnCardClicked.Invoke(card);
             }
         }
     }

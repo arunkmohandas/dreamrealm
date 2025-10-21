@@ -14,25 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelInfo:
   - levelNumber: 1
-    rows: 4
-    columns: 3
+    rows: 2
+    columns: 2
   - levelNumber: 2
-    rows: 4
+    rows: 2
     columns: 3
   - levelNumber: 3
-    rows: 4
+    rows: 2
     columns: 3
   - levelNumber: 4
-    rows: 4
+    rows: 2
     columns: 4
   - levelNumber: 5
-    rows: 4
+    rows: 3
     columns: 4
   - levelNumber: 6
-    rows: 4
+    rows: 3
     columns: 4
   - levelNumber: 7
-    rows: 5
+    rows: 4
     columns: 4
   - levelNumber: 8
     rows: 5

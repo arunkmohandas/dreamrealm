@@ -9,15 +9,11 @@ public class LevelBuilder : MonoBehaviour
     public float xSpacing = 2f;      // Horizontal spacing
     public float ySpacing = 2f;      // Vertical spacing
 
-    private void Start()
-    {
-        BuildLevel(6, 6);
-    }
 
     /// <summary>
     /// Build a level grid with random card pairs from CardData
     /// </summary>
-    public void BuildLevel(int rows, int columns)
+    public void BuildLevel(int rows, int columns, CardData cardDataPool)
     {
         // Clear existing cards
         foreach (Transform child in cardParent)
