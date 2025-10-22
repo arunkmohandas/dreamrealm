@@ -10,7 +10,12 @@ public class GameManager : MonoBehaviour
     public GameController gameController;
 
     public int currentLevel = 1;
-    public int score = 0;
+    public int currentScore = 0;
+    public int totalScore = 0;
+
+    private int levelScore;
+    private int freeClicks;
+    private int usedClicks;
 
     private void Awake()
     {
@@ -22,6 +27,11 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        totalScore = PlayerPrefs.GetInt("totalscore", 0);
     }
 
     public void StartLevel()
@@ -51,16 +61,31 @@ public class GameManager : MonoBehaviour
 
         LevelInfo info = levelData.levelInfo[levelNumber];
 
-        Debug.Log($"Starting Level {levelNumber}: {info.rows}x{info.columns}");
+        // Initialize scoring - Temporary scoring mechanism
+        levelScore = (info.rows + info.columns) * 100;
+        freeClicks = (info.rows + info.columns) * 2;
+        usedClicks = 0;
+        currentScore = levelScore;
+
 
         gameController.StartLevel(info);
+    }
+
+    public void RegisterClick()
+    {
+        usedClicks++;
+
+        if (usedClicks > freeClicks)
+        {
+            currentScore -= 10;
+            if (currentScore < 100)
+                currentScore = 100;
+        }
     }
 
     public void OnGameWon()
     {
         Debug.Log("Game Won!");
-
-        score += 100; // add example score
 
         // Proceed to next level
         currentLevel++;
@@ -68,11 +93,15 @@ public class GameManager : MonoBehaviour
 
         if (currentLevel > levelData.levelInfo.Length)
         {
-            Debug.Log("No more levels. Restarting last level...");
+            Debug.Log("No more levels. Restarting with last level info");
             currentLevel = levelData.levelInfo.Length-1;
         }
+
+        //Score update and save
+        totalScore += currentScore;
         PlayerPrefs.SetInt("level", currentLevel);
-        // Restart the same or next level
+        PlayerPrefs.SetInt("totalscore", totalScore);
+
         StartCoroutine(WaitBeforeLoadingNextLevel());
     }
 

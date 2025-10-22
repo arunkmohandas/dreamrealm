@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour
     //    StartLevel();
     //}
 
+    /// <summary>
+    /// To Start level
+    /// </summary>
+    /// <param name="levelInfo"></param>
     public void StartLevel(LevelInfo levelInfo)
     {
         rows=levelInfo.rows;
@@ -43,10 +47,17 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Susbscribe to inputmanager OnCardClicked
+    /// </summary>
+    /// <param name="clickedCard"></param>
     private void OnCardClicked(Card clickedCard)
     {
         if (!canFlip || clickedCard.IsOpen)
             return;
+
+        //Flip Audio
+        AudioManager.Instance?.PlayFlip();
 
         clickedCard.FlipOpen();
 
@@ -60,7 +71,10 @@ public class GameController : MonoBehaviour
             // Second card flipped, check match
             if (firstFlippedCard.CardID == clickedCard.CardID)
             {
-                // Match! Leave both open
+                //Play match audio
+                AudioManager.Instance?.PlayMatch();
+
+                // Match, Leave both open
                 firstFlippedCard = null;
 
                 // Check if all cards are open
@@ -69,28 +83,42 @@ public class GameController : MonoBehaviour
                     Debug.Log("Game Won!");
                     GameManager.Instance.OnGameWon();
                 }
+
             }
             else
             {
-                // No match  close both after short delay
                 StartCoroutine(CloseCards(firstFlippedCard, clickedCard));
                 firstFlippedCard = null;
             }
         }
+        GameManager.Instance.RegisterClick();
     }
 
+    /// <summary>
+    /// Close opend card when they mismatch
+    /// </summary>
+    /// <param name="card1"></param>
+    /// <param name="card2"></param>
+    /// <returns></returns>
     private IEnumerator CloseCards(Card card1, Card card2)
     {
         canFlip = false;
         yield return new WaitForSeconds(0.5f); // delay before closing
+
+        //Play mismatch audio
+        AudioManager.Instance?.PlayMismatch();
+
         card1.FlipClose();
         card2.FlipClose();
         canFlip = true;
     }
 
+    /// <summary>
+    /// Check for game over
+    /// </summary>
+    /// <returns></returns>
     private bool CheckGameWon()
     {
-        Debug.Log("chk");
         foreach (Card card in allCards)
         {
             if (card != null)

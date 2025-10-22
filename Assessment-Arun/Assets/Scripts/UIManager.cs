@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button[] homeButtons;
 
+    [SerializeField] private TMP_Text levelNumberText;
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text totalScoreText;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,6 +33,9 @@ public class UIManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Initialize buttons and screens
+    /// </summary>
     private void Start()
     {
         playButton.onClick.AddListener(PlayLevelButtonClick);
@@ -41,6 +49,9 @@ public class UIManager : MonoBehaviour
         ShowLobbyScreen();
     }
 
+    /// <summary>
+    /// Enable Lobby
+    /// </summary>
     public void ShowLobbyScreen()
     {
         lobbyScreen.SetActive(true);
@@ -48,19 +59,30 @@ public class UIManager : MonoBehaviour
         gameOverScreen.SetActive(false);
     }
 
+    /// <summary>
+    /// Enable gameplay screen
+    /// </summary>
     public void ShowGameplayScreen()
     {
         lobbyScreen.SetActive(false);
         gameplayScreen.SetActive(true);
         gameOverScreen.SetActive(false);
+        levelNumberText.text = "Level " + (GameManager.Instance.currentLevel+1).ToString();
     }
 
+    /// <summary>
+    /// Enable game over screen
+    /// </summary>
     public void ShowGameOverScreen()
     {
         lobbyScreen.SetActive(false);
         gameplayScreen.SetActive(false);
         gameOverScreen.SetActive(true);
+        scoreText.text="Score: "+GameManager.Instance.currentScore.ToString();
+        totalScoreText.text = "Total Score: " + GameManager.Instance.totalScore.ToString();
+        AudioManager.Instance.PlayGameOver();
     }
+
 
     private void PlayLevelButtonClick()
     {

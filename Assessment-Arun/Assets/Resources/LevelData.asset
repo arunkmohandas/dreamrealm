@@ -23,8 +23,8 @@ MonoBehaviour:
     rows: 2
     columns: 3
   - levelNumber: 4
-    rows: 2
-    columns: 4
+    rows: 3
+    columns: 2
   - levelNumber: 5
     rows: 3
     columns: 4
