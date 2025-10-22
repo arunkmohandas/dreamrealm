@@ -90,10 +90,14 @@ public class GameController : MonoBehaviour
 
     private bool CheckGameWon()
     {
+        Debug.Log("chk");
         foreach (Card card in allCards)
         {
-            if (!card.IsOpen)
-                return false;
+            if (card != null)
+            {
+                if (!card.IsOpen)
+                    return false;
+            }
         }
         return true;
     }

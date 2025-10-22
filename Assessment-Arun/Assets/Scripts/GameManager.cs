@@ -24,9 +24,19 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    public void StartLevel()
     {
         currentLevel = PlayerPrefs.GetInt("level",0);
+        StartLevel(currentLevel);
+    }
+
+    public void PlayNextLevel()
+    {
+        StartLevel(currentLevel);
+    }
+
+    public void RestartLevel()
+    {
         StartLevel(currentLevel);
     }
 
@@ -68,7 +78,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitBeforeLoadingNextLevel()
     {
-        yield return new WaitForSeconds(3);
-        StartLevel(currentLevel);
+        yield return new WaitForSeconds(1f);
+        //StartLevel(currentLevel);
+        UIManager.Instance.ShowGameOverScreen();
     }
 }
