@@ -12,10 +12,15 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     public int currentScore = 0;
     public int totalScore = 0;
+    public int totalCombos;
+
 
     private int levelScore;
     private int freeClicks;
     private int usedClicks;
+    private int comboCollected;
+    private bool comboActivated;
+    private int cardFlipedAfterMatch;
 
     private void Awake()
     {
@@ -65,15 +70,42 @@ public class GameManager : MonoBehaviour
         levelScore = (info.rows + info.columns) * 100;
         freeClicks = (info.rows + info.columns) * 2;
         usedClicks = 0;
+        totalCombos = 0;
+        comboCollected = 0;
+        cardFlipedAfterMatch = 0;
+        comboActivated = false;
         currentScore = levelScore;
 
 
         gameController.StartLevel(info);
     }
 
-    public void RegisterClick()
+    public void RegisterClick(bool isMatch)
     {
         usedClicks++;
+
+        if(isMatch)
+        {
+            //Check for combo, play combo ui animations
+            if(comboActivated)
+            {
+                comboCollected++;
+                totalCombos++;
+                UIManager.Instance.ShowComboAnimation(comboCollected + 1);
+            }
+            cardFlipedAfterMatch = 0;
+            comboActivated = true;
+        }
+        else
+        {
+           
+            cardFlipedAfterMatch++;
+            if (cardFlipedAfterMatch >= 2)
+            {
+                comboActivated = false;
+                comboCollected = 0;
+            }
+        }
 
         if (usedClicks > freeClicks)
         {
@@ -98,7 +130,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Score update and save
-        totalScore += currentScore;
+        totalScore += currentScore*(totalCombos+1);
         PlayerPrefs.SetInt("level", currentLevel);
         PlayerPrefs.SetInt("totalscore", totalScore);
 

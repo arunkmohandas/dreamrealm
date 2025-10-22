@@ -65,6 +65,8 @@ public class GameController : MonoBehaviour
         {
             // First card flipped
             firstFlippedCard = clickedCard;
+            //Register click on game manager
+            GameManager.Instance.RegisterClick(false);
         }
         else
         {
@@ -73,6 +75,8 @@ public class GameController : MonoBehaviour
             {
                 //Play match audio
                 AudioManager.Instance?.PlayMatch();
+                //Register click on game manager
+                GameManager.Instance.RegisterClick(true);
 
                 // Match, Leave both open
                 firstFlippedCard = null;
@@ -91,7 +95,7 @@ public class GameController : MonoBehaviour
                 firstFlippedCard = null;
             }
         }
-        GameManager.Instance.RegisterClick();
+       
     }
 
     /// <summary>

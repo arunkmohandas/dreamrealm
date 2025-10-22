@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text totalScoreText;
 
+    [SerializeField] private TMP_Text comboAnimationText;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -68,6 +70,7 @@ public class UIManager : MonoBehaviour
         gameplayScreen.SetActive(true);
         gameOverScreen.SetActive(false);
         levelNumberText.text = "Level " + (GameManager.Instance.currentLevel+1).ToString();
+        comboAnimationText.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -78,9 +81,25 @@ public class UIManager : MonoBehaviour
         lobbyScreen.SetActive(false);
         gameplayScreen.SetActive(false);
         gameOverScreen.SetActive(true);
-        scoreText.text="Score: "+GameManager.Instance.currentScore.ToString();
+        if ((GameManager.Instance.totalCombos + 1) > 1)
+            scoreText.text = "Score: " + GameManager.Instance.currentScore.ToString() + " X " + (GameManager.Instance.totalCombos+1).ToString();
+        else
+            scoreText.text = "Score: " + GameManager.Instance.currentScore.ToString();
         totalScoreText.text = "Total Score: " + GameManager.Instance.totalScore.ToString();
         AudioManager.Instance.PlayGameOver();
+    }
+
+    public void ShowComboAnimation(int count)
+    {
+        comboAnimationText.text="Combo X"+count.ToString();
+        comboAnimationText.gameObject.SetActive(true);
+        StartCoroutine(HideComboAnimation());
+    }
+
+    IEnumerator HideComboAnimation()
+    {
+        yield return new WaitForSeconds(.5f);
+        comboAnimationText.gameObject.SetActive(false);
     }
 
 
